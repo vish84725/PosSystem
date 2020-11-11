@@ -492,6 +492,24 @@ namespace Orion
             }
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            frmThirdGroup frmThirdGroup = Application.OpenForms["frmThirdGroup"] as frmThirdGroup;
+            if (frmThirdGroup != null)
+            {
+                frmThirdGroup.WindowState = FormWindowState.Normal;
+                frmThirdGroup.BringToFront();
+                frmThirdGroup.Activate();
+            }
+            else
+            {
+                frmThirdGroup = new frmThirdGroup();
+                frmThirdGroup.MdiParent = this.ParentForm;
+                frmThirdGroup.Dock = DockStyle.Fill;
+                frmThirdGroup.Show();
+            }
+        }
+
         private void btnAlter_Click(object sender, EventArgs e)
         {
             clsUtility.ExecuteSQLQuery(" SELECT  * FROM   Users  WHERE   USER_ID = '" + clsUtility.UserID + "' AND   Can_Edit = 'Y' ");

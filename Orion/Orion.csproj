@@ -202,6 +202,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dsOrion.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Item\frmThirdGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Item\frmThirdGroup.Designer.cs">
+      <DependentUpon>frmThirdGroup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Item\frmSecondayGroup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -595,6 +601,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Credit\frmPayment.resx">
       <DependentUpon>frmPayment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Item\frmThirdGroup.resx">
+      <DependentUpon>frmThirdGroup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Item\frmSecondayGroup.resx">
       <DependentUpon>frmSecondayGroup.cs</DependentUpon>

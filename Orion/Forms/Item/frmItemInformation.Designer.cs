@@ -33,13 +33,10 @@
             this.btnBrowosePhoto = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.btnDefaultWarehouse = new System.Windows.Forms.Button();
             this.lbl1040 = new System.Windows.Forms.Label();
             this.cmbDefaultWarehouse = new System.Windows.Forms.ComboBox();
-            this.btnShelf = new System.Windows.Forms.Button();
             this.cmbShelf = new System.Windows.Forms.ComboBox();
             this.label28 = new System.Windows.Forms.Label();
             this.lbl1043 = new System.Windows.Forms.Label();
@@ -50,8 +47,6 @@
             this.btnReset = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.txtSalesPrice = new System.Windows.Forms.TextBox();
-            this.btnWarehouse = new System.Windows.Forms.Button();
-            this.btnGroup = new System.Windows.Forms.Button();
             this.cmbGroup = new System.Windows.Forms.ComboBox();
             this.cmbWarehouse = new System.Windows.Forms.ComboBox();
             this.dtpExpDate = new System.Windows.Forms.DateTimePicker();
@@ -97,15 +92,20 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbSecondaryGroup = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.cmbGroupThird = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnDefaultWarehouse = new System.Windows.Forms.Button();
+            this.btnShelf = new System.Windows.Forms.Button();
+            this.btnWarehouse = new System.Windows.Forms.Button();
+            this.btnGroup = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // errorProvider
@@ -141,19 +141,6 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(165, 474);
             this.panel2.TabIndex = 7;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.ErrorImage = global::Orion.Properties.Resources.No_image_found;
-            this.pictureBox1.Image = global::Orion.Properties.Resources.No_image_found;
-            this.pictureBox1.Location = new System.Drawing.Point(9, 79);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(145, 149);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 46;
-            this.pictureBox1.TabStop = false;
             // 
             // panel4
             // 
@@ -236,22 +223,6 @@
             this.panel5.Size = new System.Drawing.Size(895, 474);
             this.panel5.TabIndex = 9;
             // 
-            // btnDefaultWarehouse
-            // 
-            this.btnDefaultWarehouse.BackColor = System.Drawing.Color.White;
-            this.btnDefaultWarehouse.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnDefaultWarehouse.FlatAppearance.BorderSize = 0;
-            this.btnDefaultWarehouse.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.btnDefaultWarehouse.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
-            this.btnDefaultWarehouse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDefaultWarehouse.Image = global::Orion.Properties.Resources.Circle_Add__04;
-            this.btnDefaultWarehouse.Location = new System.Drawing.Point(446, 373);
-            this.btnDefaultWarehouse.Name = "btnDefaultWarehouse";
-            this.btnDefaultWarehouse.Size = new System.Drawing.Size(17, 17);
-            this.btnDefaultWarehouse.TabIndex = 104;
-            this.btnDefaultWarehouse.UseVisualStyleBackColor = false;
-            this.btnDefaultWarehouse.Click += new System.EventHandler(this.btnDefaultWarehouse_Click);
-            // 
             // lbl1040
             // 
             this.lbl1040.AutoSize = true;
@@ -270,22 +241,6 @@
             this.cmbDefaultWarehouse.Name = "cmbDefaultWarehouse";
             this.cmbDefaultWarehouse.Size = new System.Drawing.Size(318, 25);
             this.cmbDefaultWarehouse.TabIndex = 102;
-            // 
-            // btnShelf
-            // 
-            this.btnShelf.BackColor = System.Drawing.Color.White;
-            this.btnShelf.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnShelf.FlatAppearance.BorderSize = 0;
-            this.btnShelf.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.btnShelf.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
-            this.btnShelf.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShelf.Image = global::Orion.Properties.Resources.Circle_Add__04;
-            this.btnShelf.Location = new System.Drawing.Point(841, 119);
-            this.btnShelf.Name = "btnShelf";
-            this.btnShelf.Size = new System.Drawing.Size(17, 17);
-            this.btnShelf.TabIndex = 101;
-            this.btnShelf.UseVisualStyleBackColor = false;
-            this.btnShelf.Click += new System.EventHandler(this.btnShelf_Click);
             // 
             // cmbShelf
             // 
@@ -411,38 +366,6 @@
             this.txtSalesPrice.Name = "txtSalesPrice";
             this.txtSalesPrice.Size = new System.Drawing.Size(112, 25);
             this.txtSalesPrice.TabIndex = 70;
-            // 
-            // btnWarehouse
-            // 
-            this.btnWarehouse.BackColor = System.Drawing.Color.White;
-            this.btnWarehouse.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnWarehouse.FlatAppearance.BorderSize = 0;
-            this.btnWarehouse.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.btnWarehouse.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
-            this.btnWarehouse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnWarehouse.Image = global::Orion.Properties.Resources.Circle_Add__04;
-            this.btnWarehouse.Location = new System.Drawing.Point(841, 86);
-            this.btnWarehouse.Name = "btnWarehouse";
-            this.btnWarehouse.Size = new System.Drawing.Size(17, 17);
-            this.btnWarehouse.TabIndex = 91;
-            this.btnWarehouse.UseVisualStyleBackColor = false;
-            this.btnWarehouse.Click += new System.EventHandler(this.btnWarehouse_Click);
-            // 
-            // btnGroup
-            // 
-            this.btnGroup.BackColor = System.Drawing.Color.White;
-            this.btnGroup.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnGroup.FlatAppearance.BorderSize = 0;
-            this.btnGroup.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.btnGroup.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
-            this.btnGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGroup.Image = global::Orion.Properties.Resources.Circle_Add__04;
-            this.btnGroup.Location = new System.Drawing.Point(445, 152);
-            this.btnGroup.Name = "btnGroup";
-            this.btnGroup.Size = new System.Drawing.Size(17, 17);
-            this.btnGroup.TabIndex = 90;
-            this.btnGroup.UseVisualStyleBackColor = false;
-            this.btnGroup.Click += new System.EventHandler(this.btnGroup_Click);
             // 
             // cmbGroup
             // 
@@ -904,22 +827,6 @@
             this.cmbSecondaryGroup.TabIndex = 107;
             this.cmbSecondaryGroup.SelectedIndexChanged += new System.EventHandler(this.cmbSecondaryGroup_SelectedIndexChanged);
             // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Image = global::Orion.Properties.Resources.Circle_Add__04;
-            this.button1.Location = new System.Drawing.Point(446, 186);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(17, 17);
-            this.button1.TabIndex = 108;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -964,6 +871,100 @@
             this.button2.Size = new System.Drawing.Size(17, 17);
             this.button2.TabIndex = 112;
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.White;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Image = global::Orion.Properties.Resources.Circle_Add__04;
+            this.button1.Location = new System.Drawing.Point(446, 186);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(17, 17);
+            this.button1.TabIndex = 108;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnDefaultWarehouse
+            // 
+            this.btnDefaultWarehouse.BackColor = System.Drawing.Color.White;
+            this.btnDefaultWarehouse.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnDefaultWarehouse.FlatAppearance.BorderSize = 0;
+            this.btnDefaultWarehouse.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.btnDefaultWarehouse.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
+            this.btnDefaultWarehouse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDefaultWarehouse.Image = global::Orion.Properties.Resources.Circle_Add__04;
+            this.btnDefaultWarehouse.Location = new System.Drawing.Point(446, 373);
+            this.btnDefaultWarehouse.Name = "btnDefaultWarehouse";
+            this.btnDefaultWarehouse.Size = new System.Drawing.Size(17, 17);
+            this.btnDefaultWarehouse.TabIndex = 104;
+            this.btnDefaultWarehouse.UseVisualStyleBackColor = false;
+            this.btnDefaultWarehouse.Click += new System.EventHandler(this.btnDefaultWarehouse_Click);
+            // 
+            // btnShelf
+            // 
+            this.btnShelf.BackColor = System.Drawing.Color.White;
+            this.btnShelf.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnShelf.FlatAppearance.BorderSize = 0;
+            this.btnShelf.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.btnShelf.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
+            this.btnShelf.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShelf.Image = global::Orion.Properties.Resources.Circle_Add__04;
+            this.btnShelf.Location = new System.Drawing.Point(841, 119);
+            this.btnShelf.Name = "btnShelf";
+            this.btnShelf.Size = new System.Drawing.Size(17, 17);
+            this.btnShelf.TabIndex = 101;
+            this.btnShelf.UseVisualStyleBackColor = false;
+            this.btnShelf.Click += new System.EventHandler(this.btnShelf_Click);
+            // 
+            // btnWarehouse
+            // 
+            this.btnWarehouse.BackColor = System.Drawing.Color.White;
+            this.btnWarehouse.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnWarehouse.FlatAppearance.BorderSize = 0;
+            this.btnWarehouse.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.btnWarehouse.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
+            this.btnWarehouse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnWarehouse.Image = global::Orion.Properties.Resources.Circle_Add__04;
+            this.btnWarehouse.Location = new System.Drawing.Point(841, 86);
+            this.btnWarehouse.Name = "btnWarehouse";
+            this.btnWarehouse.Size = new System.Drawing.Size(17, 17);
+            this.btnWarehouse.TabIndex = 91;
+            this.btnWarehouse.UseVisualStyleBackColor = false;
+            this.btnWarehouse.Click += new System.EventHandler(this.btnWarehouse_Click);
+            // 
+            // btnGroup
+            // 
+            this.btnGroup.BackColor = System.Drawing.Color.White;
+            this.btnGroup.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnGroup.FlatAppearance.BorderSize = 0;
+            this.btnGroup.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.btnGroup.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
+            this.btnGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGroup.Image = global::Orion.Properties.Resources.Circle_Add__04;
+            this.btnGroup.Location = new System.Drawing.Point(445, 152);
+            this.btnGroup.Name = "btnGroup";
+            this.btnGroup.Size = new System.Drawing.Size(17, 17);
+            this.btnGroup.TabIndex = 90;
+            this.btnGroup.UseVisualStyleBackColor = false;
+            this.btnGroup.Click += new System.EventHandler(this.btnGroup_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox1.ErrorImage = global::Orion.Properties.Resources.No_image_found;
+            this.pictureBox1.Image = global::Orion.Properties.Resources.No_image_found;
+            this.pictureBox1.Location = new System.Drawing.Point(9, 79);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(145, 149);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 46;
+            this.pictureBox1.TabStop = false;
             // 
             // frmItemInformation
             // 
@@ -988,9 +989,9 @@
             this.Load += new System.EventHandler(this.frmItemInformation_Load);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }

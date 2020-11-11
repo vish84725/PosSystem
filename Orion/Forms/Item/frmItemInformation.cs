@@ -479,6 +479,7 @@ namespace Orion
             frmSecondaryGroup frmSecondaryGroup = Application.OpenForms["frmSecondaryGroup"] as frmSecondaryGroup;
             if (frmSecondaryGroup != null)
             {
+                frmSecondaryGroup.CurrentGroupId = GetSelectedGroupId();
                 frmSecondaryGroup.WindowState = FormWindowState.Normal;
                 frmSecondaryGroup.BringToFront();
                 frmSecondaryGroup.Activate();
@@ -486,6 +487,7 @@ namespace Orion
             else
             {
                 frmSecondaryGroup = new frmSecondaryGroup();
+                frmSecondaryGroup.CurrentGroupId = GetSelectedGroupId();
                 frmSecondaryGroup.MdiParent = this.ParentForm;
                 frmSecondaryGroup.Dock = DockStyle.Fill;
                 frmSecondaryGroup.Show();
@@ -498,12 +500,16 @@ namespace Orion
             if (frmThirdGroup != null)
             {
                 frmThirdGroup.WindowState = FormWindowState.Normal;
+                frmThirdGroup.CurrentGroupId = GetSelectedGroupId();
+                frmThirdGroup.CurrentSecondaryGroupId = GetSelectedSecondaryGroupId();
                 frmThirdGroup.BringToFront();
                 frmThirdGroup.Activate();
             }
             else
             {
                 frmThirdGroup = new frmThirdGroup();
+                frmThirdGroup.CurrentGroupId = GetSelectedGroupId();
+                frmThirdGroup.CurrentSecondaryGroupId = GetSelectedSecondaryGroupId();
                 frmThirdGroup.MdiParent = this.ParentForm;
                 frmThirdGroup.Dock = DockStyle.Fill;
                 frmThirdGroup.Show();
@@ -554,6 +560,37 @@ namespace Orion
                 clsUtility.MesgBoxShow("msgPermission", "err");
             }
         }
+
+        #region Helper Methods
+        private int GetSelectedGroupId()
+        {
+            int groupId = -1;
+            try
+            {
+                Int32.TryParse(cmbGroup.SelectedValue.ToString(), out groupId);
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return groupId;
+        }
+        private int GetSelectedSecondaryGroupId()
+        {
+            int secondaryGroupId = -1;
+            try
+            {
+                Int32.TryParse(cmbSecondaryGroup.SelectedValue.ToString(), out secondaryGroupId);
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return secondaryGroupId;
+        }
+        #endregion
 
 
 

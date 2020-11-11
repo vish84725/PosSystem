@@ -14,6 +14,9 @@ namespace Orion
 {
     public partial class frmSecondaryGroup : Form
     {
+        #region Public Propeties
+        public int CurrentGroupId { get; set; }
+        #endregion
         public frmSecondaryGroup()
         {
             InitializeComponent();
@@ -107,6 +110,7 @@ namespace Orion
         private void LoadGroups()
         {
             clsUtility.FillComboBox(" SELECT  GROUP_ID, GROUP_NAME  FROM  ItemGroup  ORDER BY GROUP_NAME", "GROUP_ID", "GROUP_NAME", cmbGroup);
+            InitializeData(CurrentGroupId);
         }
 
         private void InitializeData(int groupId)

@@ -14,6 +14,10 @@ namespace Orion
 {
     public partial class frmThirdGroup : Form
     {
+        #region Public Propeties
+        public int CurrentGroupId { get; set; }
+        public int CurrentSecondaryGroupId { get; set; }
+        #endregion
         public frmThirdGroup()
         {
             InitializeComponent();
@@ -86,8 +90,15 @@ namespace Orion
             LoadTableData();
         }
 
+        private void SetData()
+        {
+            SetGroup();
+            SetSecondaryGroup();
+        }
+
         private void LoadTableData()
         {
+            SetSecondaryGroup();
             int secondoryGroupId = GetSelectedSecondaryGroupId();
             
             if(secondoryGroupId != -1)
@@ -107,6 +118,7 @@ namespace Orion
         private void LoadGroups()
         {
             clsUtility.FillComboBox(" SELECT  GROUP_ID, GROUP_NAME  FROM  ItemGroup  ORDER BY GROUP_NAME", "GROUP_ID", "GROUP_NAME", cmbGroup);
+            SetGroup();
         }
 
         private void LoadPaintModes(int groupId)
@@ -117,24 +129,35 @@ namespace Orion
                                 , "SECONDARY_GROUP_ID", "SECONDARY_GROUP_NAME", cmbSecondaryGroup);
         }
 
-        private void InitializeData(int groupId,int secondaryGroupId)
+        private void SetGroup()
         {
             try
             {
-                if (groupId != 0 && groupId != -1)
+                if (CurrentGroupId != 0 && CurrentGroupId != -1)
                 {
-                    cmbGroup.SelectedValue = groupId;
-                }
-                if (secondaryGroupId != 0 && secondaryGroupId != -1)
-                {
-                    cmbSecondaryGroup.SelectedValue = secondaryGroupId;
+                    cmbGroup.SelectedValue = CurrentGroupId;
+                    this.CurrentGroupId = -1;
                 }
             }
             catch (Exception)
             {
 
             }
- 
+        }
+        private void SetSecondaryGroup()
+        {
+            try
+            {
+                if (CurrentSecondaryGroupId != 0 && CurrentSecondaryGroupId != -1)
+                {
+                    cmbSecondaryGroup.SelectedValue = CurrentSecondaryGroupId;
+                    this.CurrentSecondaryGroupId = -1;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private ErrorResponse ValidateData()
@@ -201,11 +224,11 @@ namespace Orion
                         errorProvider.Clear();
                         try
                         {
-                            var groupId = GetSelectedGroupId();
-                            var secondaryGroupId = GetSelectedSecondaryGroupId();
-                            clsUtility.ExecuteSQLQuery(" INSERT INTO ItemThirdGroup (THIRD_GROUP_NAME,SECONDARY_GROUP_ID) VALUES ('" + txtThirdGroupName.Text + "', " + secondaryGroupId + ") ");
+                            this.CurrentGroupId = GetSelectedGroupId();
+                            this.CurrentSecondaryGroupId = GetSelectedSecondaryGroupId();
+                            clsUtility.ExecuteSQLQuery(" INSERT INTO ItemThirdGroup (THIRD_GROUP_NAME,SECONDARY_GROUP_ID) VALUES ('" + txtThirdGroupName.Text + "', " + CurrentSecondaryGroupId + ") ");
                             btnReset.PerformClick();
-                            InitializeData(groupId,secondaryGroupId);
+                            SetData();
                             LoadTableData();
                             clsUtility.MesgBoxShow("msgSaved", "info");
                         }

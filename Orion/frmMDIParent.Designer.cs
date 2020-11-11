@@ -246,9 +246,9 @@
             this.Label1.Location = new System.Drawing.Point(0, 0);
             this.Label1.Name = "Label1";
             this.Label1.Padding = new System.Windows.Forms.Padding(13);
-            this.Label1.Size = new System.Drawing.Size(131, 71);
+            this.Label1.Size = new System.Drawing.Size(244, 71);
             this.Label1.TabIndex = 1;
-            this.Label1.Text = "Orion";
+            this.Label1.Text = "Pelican Trade";
             // 
             // panel2
             // 
@@ -1059,7 +1059,7 @@
             this.IsMdiContainer = true;
             this.Name = "frmMDIParent";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Orion - Inventory Management Software";
+            this.Text = "PelicanTrade - Inventory Management Software";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMDIParent_FormClosing);
             this.Load += new System.EventHandler(this.frmMDIParent_Load);

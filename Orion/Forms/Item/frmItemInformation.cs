@@ -429,6 +429,49 @@ namespace Orion
             }
         }
 
+        private void cmbGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(cmbGroup.SelectedIndex != -1 && cmbGroup.SelectedValue != null && cmbGroup.SelectedValue.ToString() != string.Empty)
+            {
+                int groupId = -1;
+                Int32.TryParse(cmbGroup.SelectedValue.ToString(), out groupId);
+                if(groupId != -1)
+                {
+                    cmbSecondaryGroup.ResetText();
+                    clsUtility.FillComboBox(" SELECT  SECONDARY_GROUP_ID, SECONDARY_GROUP_NAME  FROM  ItemSecondoryGroup WHERE GROUP_ID ='"+ groupId + "' ORDER BY  SECONDARY_GROUP_NAME", "SECONDARY_GROUP_ID", "SECONDARY_GROUP_NAME", cmbSecondaryGroup);
+                }
+            }
+          
+        }
+
+        private void cmbGroupThird_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbGroupThird.SelectedIndex != -1 && cmbGroupThird.SelectedValue != null && cmbGroupThird.SelectedValue.ToString() != string.Empty)
+            {
+                int thirdGroupId = -1;
+                Int32.TryParse(cmbSecondaryGroup.SelectedValue.ToString(), out thirdGroupId);
+                if (thirdGroupId != -1)
+                {
+                    var ItemName = cmbGroup.Text + " - " + cmbSecondaryGroup.Text + " - " + cmbGroupThird.Text;
+                    txtItemName.Text = ItemName;
+                }
+            }
+        }
+
+        private void cmbSecondaryGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbSecondaryGroup.SelectedIndex != -1 && cmbSecondaryGroup.SelectedValue != null && cmbSecondaryGroup.SelectedValue.ToString() != string.Empty)
+            {
+                int secondayGroupId = -1;
+                Int32.TryParse(cmbSecondaryGroup.SelectedValue.ToString(), out secondayGroupId);
+                if (secondayGroupId != -1)
+                {
+                    cmbGroupThird.ResetText();
+                    clsUtility.FillComboBox(" SELECT  THIRD_GROUP_ID, THIRD_GROUP_NAME  FROM  ItemThirdGroup WHERE SECONDARY_GROUP_ID ='" + secondayGroupId + "' ORDER BY  THIRD_GROUP_NAME", "THIRD_GROUP_ID", "THIRD_GROUP_NAME", cmbGroupThird);
+                }
+            }
+        }
+
         private void btnAlter_Click(object sender, EventArgs e)
         {
             clsUtility.ExecuteSQLQuery(" SELECT  * FROM   Users  WHERE   USER_ID = '" + clsUtility.UserID + "' AND   Can_Edit = 'Y' ");

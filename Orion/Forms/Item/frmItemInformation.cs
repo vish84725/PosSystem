@@ -271,11 +271,13 @@ namespace Orion
             if (clsUtility.sqlDT.Rows.Count > 0)
             {
                 ///////////////////////////////////////////
-                if (string.IsNullOrWhiteSpace(this.txtItemName.Text) | string.IsNullOrWhiteSpace(this.txtUnit.Text) | cmbGroup.SelectedValue == null | cmbGroup.SelectedIndex == -1 | cmbDefaultWarehouse.SelectedValue == null | cmbDefaultWarehouse.SelectedIndex == -1)
+                if (string.IsNullOrWhiteSpace(this.txtItemName.Text) | string.IsNullOrWhiteSpace(this.txtUnit.Text) | cmbGroup.SelectedValue == null | cmbSecondaryGroup.SelectedValue == null | cmbGroupThird.SelectedValue == null | cmbGroup.SelectedIndex == -1 | cmbDefaultWarehouse.SelectedValue == null | cmbDefaultWarehouse.SelectedIndex == -1)
                 {
                     errorProvider.SetError(txtItemName, "Required");
                     errorProvider.SetError(txtUnit, "Required");
                     errorProvider.SetError(cmbGroup, "Required");
+                    errorProvider.SetError(cmbSecondaryGroup, "Required");
+                    errorProvider.SetError(cmbGroupThird, "Required");
                     errorProvider.SetError(cmbDefaultWarehouse, "Required");
                 }
                 else
@@ -294,8 +296,8 @@ namespace Orion
                         {
                             ///////////////////////////
 
-                            clsUtility.ExecuteSQLQuery(" INSERT INTO ItemInformation(ItemName,UnitOfMeasure,Batch,GROUP_ID,Barcode,Cost,Price,ReorderPoint,VAT_Applicable, WarehouseID) VALUES " +
-                                                           "  ('" + txtItemName.Text + "','" + txtUnit.Text + "','" + txtBatch.Text + "','" + cmbGroup.SelectedValue.ToString() + "','" + clsUtility.GenarateAutoBarcode(barcode) + "','" + clsUtility.num_repl(txtPurchaseCost.Text) + "','" + clsUtility.num_repl(txtSalesPrice.Text) + "','" + clsUtility.num_repl(txtReorderPoint.Text) + "','" + VATapplicable + "','" + cmbDefaultWarehouse.SelectedValue.ToString() + "') ");
+                            clsUtility.ExecuteSQLQuery(" INSERT INTO ItemInformation(ItemName,UnitOfMeasure,Batch,GROUP_ID,SECONDARY_GROUP_ID,THIRD_GROUP_ID,Barcode,Cost,Price,ReorderPoint,VAT_Applicable, WarehouseID) VALUES " +
+                                                           "  ('" + txtItemName.Text + "','" + txtUnit.Text + "','" + txtBatch.Text + "','" + cmbGroup.SelectedValue.ToString() + "','" + cmbSecondaryGroup.SelectedValue.ToString() + "','" + cmbGroupThird.SelectedValue.ToString() + "','" + clsUtility.GenarateAutoBarcode(barcode) + "','" + clsUtility.num_repl(txtPurchaseCost.Text) + "','" + clsUtility.num_repl(txtSalesPrice.Text) + "','" + clsUtility.num_repl(txtReorderPoint.Text) + "','" + VATapplicable + "','" + cmbDefaultWarehouse.SelectedValue.ToString() + "') ");
                             clsUtility.ExecuteSQLQuery("SELECT  ITEM_ID   FROM   ItemInformation  ORDER BY ITEM_ID DESC");
                             ITEM_ID = clsUtility.sqlDT.Rows[0]["ITEM_ID"].ToString();
                             clsUtility.ExecuteSQLQuery(" INSERT INTO Stock(ITEM_ID,Quantity,ExpiryDate,WarehouseID, SHELF_ID, Expiry) VALUES ('" + ITEM_ID + "','" + clsUtility.num_repl(txtOpeningStock.Text) + "','" + ExpiryDate.ToString() + "','" + cmbWarehouse.SelectedValue.ToString() + "', '" + clsUtility.fltr_combo(cmbShelf) + "', '" + Expiry + "') ");
@@ -469,6 +471,24 @@ namespace Orion
                     cmbGroupThird.ResetText();
                     clsUtility.FillComboBox(" SELECT  THIRD_GROUP_ID, THIRD_GROUP_NAME  FROM  ItemThirdGroup WHERE SECONDARY_GROUP_ID ='" + secondayGroupId + "' ORDER BY  THIRD_GROUP_NAME", "THIRD_GROUP_ID", "THIRD_GROUP_NAME", cmbGroupThird);
                 }
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            frmSecondaryGroup frmSecondaryGroup = Application.OpenForms["frmSecondaryGroup"] as frmSecondaryGroup;
+            if (frmSecondaryGroup != null)
+            {
+                frmSecondaryGroup.WindowState = FormWindowState.Normal;
+                frmSecondaryGroup.BringToFront();
+                frmSecondaryGroup.Activate();
+            }
+            else
+            {
+                frmSecondaryGroup = new frmSecondaryGroup();
+                frmSecondaryGroup.MdiParent = this.ParentForm;
+                frmSecondaryGroup.Dock = DockStyle.Fill;
+                frmSecondaryGroup.Show();
             }
         }
 

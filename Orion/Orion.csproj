@@ -90,6 +90,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\clsUtility.cs" />
+    <Compile Include="Class\Constants.cs" />
+    <Compile Include="Class\ErrorResponse.cs" />
     <Compile Include="CrystalReports\attendance.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -199,6 +201,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>dsOrion.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Item\frmSecondayGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Item\frmSecondayGroup.Designer.cs">
+      <DependentUpon>frmSecondayGroup.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Setup\frmBusinessInformation.cs">
       <SubType>Form</SubType>
@@ -587,6 +595,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Credit\frmPayment.resx">
       <DependentUpon>frmPayment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Item\frmSecondayGroup.resx">
+      <DependentUpon>frmSecondayGroup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Setup\frmBusinessInformation.resx">
       <DependentUpon>frmBusinessInformation.cs</DependentUpon>

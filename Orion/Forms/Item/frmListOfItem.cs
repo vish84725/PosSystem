@@ -86,8 +86,14 @@ namespace Orion
         }
 
         private void LoadData() {
-            clsUtility.FillDataGrid(" SELECT ITEM_ID, ItemName, UnitOfMeasure, Batch, GROUP_NAME, Barcode, Cost,  Price,  ReorderPoint,  VAT_Applicable, WarehouseID " +
-                                    " FROM ItemInformation  LEFT OUTER JOIN ItemGroup ON (ItemGroup.GROUP_ID = ItemInformation.GROUP_ID) ORDER BY ItemName ", dataGridView1);
+            string query = @"SELECT ITEM_ID, ItemName, UnitOfMeasure, Batch, GROUP_NAME,SECONDARY_GROUP_NAME, THIRD_GROUP_NAME, Barcode, Cost,  Price,  ReorderPoint,  VAT_Applicable, WarehouseID  
+                            FROM ItemInformation  
+	                        LEFT OUTER JOIN ItemGroup ON (ItemGroup.GROUP_ID = ItemInformation.GROUP_ID) 
+	                        LEFT OUTER JOIN ItemSecondoryGroup ON (ItemSecondoryGroup.SECONDARY_GROUP_ID = ItemInformation.SECONDARY_GROUP_ID) 
+	                        LEFT OUTER JOIN ItemThirdGroup ON (ItemThirdGroup.THIRD_GROUP_ID = ItemInformation.THIRD_GROUP_ID) 
+	                        ORDER BY ItemName";
+
+            clsUtility.FillDataGrid(query, dataGridView1);
         }
 
         private void btnClose_Click(object sender, EventArgs e)

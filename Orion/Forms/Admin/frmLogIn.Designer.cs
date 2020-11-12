@@ -59,9 +59,9 @@
             this.Label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.Label1.Location = new System.Drawing.Point(6, 9);
             this.Label1.Name = "Label1";
-            this.Label1.Size = new System.Drawing.Size(90, 33);
+            this.Label1.Size = new System.Drawing.Size(198, 33);
             this.Label1.TabIndex = 4;
-            this.Label1.Text = "Orion";
+            this.Label1.Text = "Pelican Trade";
             // 
             // btnClose
             // 
@@ -222,7 +222,7 @@
             this.MaximizeBox = false;
             this.Name = "frmLogIn";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Orion - LogIn";
+            this.Text = "Pelican Trade - LogIn";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmLogIn_FormClosing);
             this.Load += new System.EventHandler(this.frmLogIn_Load);
             ((System.ComponentModel.ISupportInitialize)(this.UserNameErrorProvider)).EndInit();

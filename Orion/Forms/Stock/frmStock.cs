@@ -97,8 +97,11 @@ namespace Orion
         private void LoadData() {
             clsUtility.FillComboBox(" SELECT  GROUP_ID, GROUP_NAME  FROM  ItemGroup  ORDER BY GROUP_NAME", "GROUP_ID", "GROUP_NAME", cmbGroup);
             clsUtility.FillComboBox(" SELECT  WarehouseID, WarehouseName  FROM  Warehouse  ORDER BY WarehouseName", "WarehouseID", "WarehouseName", cmbWarehouse);
-            clsUtility.FillDataGrid(" SELECT        STOCK_ID, ItemName, Barcode, Quantity, UnitOfMeasure, Cost, Price, WarehouseName, SHELF_NAME, ReorderPoint, Stock.WarehouseID, Stock.ITEM_ID " +
-                                    " FROM            Stock LEFT OUTER JOIN  Shelf ON Stock.SHELF_ID = Shelf.SHELF_ID LEFT OUTER JOIN  Warehouse ON Stock.WarehouseID = Warehouse.WarehouseID LEFT OUTER JOIN   ItemInformation ON Stock.ITEM_ID = ItemInformation.ITEM_ID ", dataGridView1);
+            clsUtility.FillDataGrid(@"SELECT STOCK_ID, ItemName, Barcode, Quantity, Stock.UnitOfMeasure, Stock.Cost, Stock.Price, WarehouseName, SHELF_NAME, Stock.ReorderPoint, Stock.WarehouseID, Stock.ITEM_ID  
+                                      FROM Stock 
+	                                        LEFT OUTER JOIN  Shelf ON Stock.SHELF_ID = Shelf.SHELF_ID 
+	                                        LEFT OUTER JOIN  Warehouse ON Stock.WarehouseID = Warehouse.WarehouseID 
+	                                        LEFT OUTER JOIN  ItemInformation ON Stock.ITEM_ID = ItemInformation.ITEM_ID", dataGridView1);
         }
 
         private void btnClose_Click(object sender, EventArgs e)

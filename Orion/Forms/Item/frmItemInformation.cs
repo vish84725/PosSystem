@@ -290,7 +290,9 @@ namespace Orion
                         errorProvider.Clear();
                         string barcode = null;
                         string VATapplicable = null;
-                        string ITEM_ID = null;
+                        string GROUP_ID = null;
+                        string SECONDARY_GROUP_ID = null;
+                        string THIRD_GROUP_ID = null;
                         if (cbVATapplicable.Checked) { VATapplicable = "Y"; } else { VATapplicable = "N"; }
                         try
                         {
@@ -298,9 +300,58 @@ namespace Orion
 
                             clsUtility.ExecuteSQLQuery(" INSERT INTO ItemInformation(ItemName,UnitOfMeasure,Batch,GROUP_ID,SECONDARY_GROUP_ID,THIRD_GROUP_ID,Barcode,Cost,Price,ReorderPoint,VAT_Applicable, WarehouseID) VALUES " +
                                                            "  ('" + txtItemName.Text + "','" + txtUnit.Text + "','" + txtBatch.Text + "','" + cmbGroup.SelectedValue.ToString() + "','" + cmbSecondaryGroup.SelectedValue.ToString() + "','" + cmbGroupThird.SelectedValue.ToString() + "','" + clsUtility.GenarateAutoBarcode(barcode) + "','" + clsUtility.num_repl(txtPurchaseCost.Text) + "','" + clsUtility.num_repl(txtSalesPrice.Text) + "','" + clsUtility.num_repl(txtReorderPoint.Text) + "','" + VATapplicable + "','" + cmbDefaultWarehouse.SelectedValue.ToString() + "') ");
-                            clsUtility.ExecuteSQLQuery("SELECT  ITEM_ID   FROM   ItemInformation  ORDER BY ITEM_ID DESC");
-                            ITEM_ID = clsUtility.sqlDT.Rows[0]["ITEM_ID"].ToString();
-                            clsUtility.ExecuteSQLQuery(" INSERT INTO Stock(ITEM_ID,Quantity,ExpiryDate,WarehouseID, SHELF_ID, Expiry) VALUES ('" + ITEM_ID + "','" + clsUtility.num_repl(txtOpeningStock.Text) + "','" + ExpiryDate.ToString() + "','" + cmbWarehouse.SelectedValue.ToString() + "', '" + clsUtility.fltr_combo(cmbShelf) + "', '" + Expiry + "') ");
+                            clsUtility.ExecuteSQLQuery("SELECT  ITEM_ID,GROUP_ID,SECONDARY_GROUP_ID,THIRD_GROUP_ID   FROM   ItemInformation  ORDER BY ITEM_ID DESC");
+                            GROUP_ID = clsUtility.sqlDT.Rows[0]["GROUP_ID"].ToString();
+                            SECONDARY_GROUP_ID = clsUtility.sqlDT.Rows[0]["SECONDARY_GROUP_ID"].ToString();
+                            THIRD_GROUP_ID = clsUtility.sqlDT.Rows[0]["THIRD_GROUP_ID"].ToString();
+
+                            clsUtility.ExecuteSQLQuery(@"SELECT  STOCK_ID,Quantity  
+                                                         FROM Stock 
+                                                         WHERE GROUP_ID ="+ GROUP_ID +@" AND 
+                                                               SECONDARY_GROUP_ID ="+ SECONDARY_GROUP_ID +@" AND 
+                                                               THIRD_GROUP_ID =" + THIRD_GROUP_ID);
+
+                            if(clsUtility.sqlDT != null && clsUtility.sqlDT.Rows != null && clsUtility.sqlDT.Rows.Count > 0)
+                            {
+                                var stockId = clsUtility.sqlDT.Rows[0]["STOCK_ID"].ToString();
+                                var qty = clsUtility.sqlDT.Rows[0]["Quantity"].ToString();
+
+                                int quantity = 0;
+                                Int32.TryParse(qty, out quantity);
+                                quantity++;
+
+                                var updateQuery = @"UPDATE Stock
+                                                             SET Quantity =" + quantity + @",
+                                                                 ExpiryDate ='" + ExpiryDate + @"',
+                                                                 Expiry ='" + Expiry + @"',
+                                                                 UnitOfMeasure ='" + txtUnit.Text + @"',
+                                                                 Cost =" + txtPurchaseCost.Text + @",
+                                                                 Price =" + txtSalesPrice.Text + @",
+                                                                 ReorderPoint =" + txtReorderPoint.Text + @",
+                                                                 VAT_Applicable ='" + VATapplicable + @"'
+                                                             WHERE STOCK_ID = " + stockId;
+                                clsUtility.ExecuteSQLQuery(updateQuery);
+
+                            }
+                            else
+                            {
+                                clsUtility.ExecuteSQLQuery(" INSERT INTO Stock(ITEM_ID,GROUP_ID,SECONDARY_GROUP_ID,THIRD_GROUP_ID,Quantity,ExpiryDate,WarehouseID, SHELF_ID, Expiry,UnitOfMeasure,Cost,Price,ReorderPoint,VAT_Applicable) VALUES ('" + ITEM_ID + "','" +
+                                                                                                                                                                                                  GROUP_ID + "','" +
+                                                                                                                                                                                                  SECONDARY_GROUP_ID + "','" +
+                                                                                                                                                                                                  THIRD_GROUP_ID + "','" +
+                                                                                                                                                                                                  1 + "','" + 
+                                                                                                                                                                                                  ExpiryDate.ToString() + "','" + 
+                                                                                                                                                                                                  cmbWarehouse.SelectedValue.ToString() + "', '" + 
+                                                                                                                                                                                                  clsUtility.fltr_combo(cmbShelf) + "', '" +
+                                                                                                                                                                                                  Expiry + "', '" +
+                                                                                                                                                                                                  txtUnit.Text + "', '" +
+                                                                                                                                                                                                  clsUtility.num_repl(txtPurchaseCost.Text) + "', '" +
+                                                                                                                                                                                                  clsUtility.num_repl(txtSalesPrice.Text) + "', '" +
+                                                                                                                                                                                                  clsUtility.num_repl(txtReorderPoint.Text) + "', '" +
+                                                                                                                                                                                                  VATapplicable + "') ");
+                            }
+
+
                             UploadImage(ITEM_ID);
                             btnReset.PerformClick();
                             clsUtility.MesgBoxShow("msgSaved", "info");
@@ -458,6 +509,8 @@ namespace Orion
                     txtItemName.Text = ItemName;
                 }
             }
+
+            LoadItemInformationFromStock(GetSelectedGroupId(), GetSelectedSecondaryGroupId(), GetSelectedThirdGroupId());
         }
 
         private void cmbSecondaryGroup_SelectedIndexChanged(object sender, EventArgs e)
@@ -590,8 +643,62 @@ namespace Orion
 
             return secondaryGroupId;
         }
+        private int GetSelectedThirdGroupId()
+        {
+            int thirdGroupId = -1;
+            try
+            {
+                Int32.TryParse(cmbGroupThird.SelectedValue.ToString(), out thirdGroupId);
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return thirdGroupId;
+        }
         #endregion
 
+
+        #region Business Methods
+        private void LoadItemInformationFromStock(int groupId, int secondaryGroupId, int thirdGroupId)
+        {
+            if(groupId != 0 && groupId != -1 && secondaryGroupId != 0 && secondaryGroupId != -1 && thirdGroupId != 0 && thirdGroupId != -1)
+            {
+                string selectStockQry = @"SELECT WarehouseID,ExpiryDate,SHELF_ID,Expiry,UnitOfMeasure,Cost,Price,ReorderPoint,VAT_Applicable
+                                      FROM STOCK
+                                      WHERE GROUP_ID = " + groupId + @" AND
+                                            SECONDARY_GROUP_ID = " + secondaryGroupId + @" AND
+                                            THIRD_GROUP_ID = " + thirdGroupId;
+                try
+                {
+                    clsUtility.ExecuteSQLQuery(selectStockQry);
+                    if (clsUtility.sqlDT.Rows.Count > 0)
+                    {
+                        cmbWarehouse.SelectedValue = clsUtility.sqlDT.Rows[0]["WarehouseID"].ToString();
+                        cmbShelf.SelectedValue = clsUtility.sqlDT.Rows[0]["SHELF_ID"].ToString();
+                        txtUnit.Text = clsUtility.sqlDT.Rows[0]["UnitOfMeasure"].ToString();
+                        txtPurchaseCost.Text = clsUtility.sqlDT.Rows[0]["Cost"].ToString();
+                        txtSalesPrice.Text = clsUtility.sqlDT.Rows[0]["Price"].ToString();
+                        txtReorderPoint.Text = clsUtility.sqlDT.Rows[0]["ReorderPoint"].ToString();
+                        cbVATapplicable.Checked = clsUtility.sqlDT.Rows[0]["VAT_Applicable"].ToString() == "Y" ? true : false;
+
+                        try { dtpExpDate.Text = clsUtility.sqlDT.Rows[0]["ExpiryDate"].ToString(); }
+
+                        catch (Exception) { }
+
+                        if (clsUtility.sqlDT.Rows[0]["Expiry"].ToString() == "Y") { chkExp.Checked = true; }
+                        else { chkExp.Checked = false; }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            
+        }
+        #endregion
 
 
     }

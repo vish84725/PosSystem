@@ -202,6 +202,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dsOrion.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Entity\Item.cs" />
+    <Compile Include="Entity\PrimaryGroup.cs" />
+    <Compile Include="Entity\Sale.cs" />
+    <Compile Include="Entity\SecondaryGroup.cs" />
+    <Compile Include="Entity\Stock.cs" />
+    <Compile Include="Entity\ThirdGroup.cs" />
     <Compile Include="Forms\Item\frmThirdGroup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -478,6 +484,7 @@
     <Compile Include="Forms\Return\frmSaleReturnReport.Designer.cs">
       <DependentUpon>frmSaleReturnReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IStockService.cs" />
     <Compile Include="Reports\frmReportExpenses.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -528,6 +535,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\StockService.cs" />
     <EmbeddedResource Include="CrystalReports\attendance.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>attendance.cs</LastGenOutput>

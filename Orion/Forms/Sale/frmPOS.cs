@@ -11,15 +11,20 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using Orion.Interfaces;
+using Orion.Services;
+using Orion.Entity;
 
 namespace Orion
 {
     public partial class frmPOS : Form
     {
+        IStockService StockService;
         public frmPOS(String SALES_ID)
         {
             InitializeComponent();
             txtInvoiceNo.Text = SALES_ID;
+            StockService = new StockService();
         }
 
         private void LoadLanguegePack()
@@ -307,47 +312,82 @@ namespace Orion
 
         private void InsertSalesItem(string ITEM_ID, double QTY)
         {
-            double VAT;
-            clsUtility.ExecuteSQLQuery("SELECT * FROM Vat");
-            if (clsUtility.sqlDT.Rows.Count > 0) { VAT = Convert.ToDouble(clsUtility.sqlDT.Rows[0]["Vat"]); } else { VAT = 0; }
+            int itemId = -1;
+            Int32.TryParse(ITEM_ID, out itemId);
 
-            clsUtility.ExecuteSQLQuery(" SELECT * FROM  ItemInformation  WHERE ITEM_ID ='" + ITEM_ID + "' ");
-            if (clsUtility.sqlDT.Rows.Count > 0)
+            double VAT = StockService.GetVAT();
+            if(itemId != 0 && itemId != -1)
             {
-                string WarehouseID, ExpiryDate, VAT_Applicable;
-                WarehouseID = clsUtility.sqlDT.Rows[0]["WarehouseID"].ToString();
-                VAT_Applicable = clsUtility.sqlDT.Rows[0]["VAT_Applicable"].ToString();
-                double Cost = Convert.ToDouble(clsUtility.sqlDT.Rows[0]["Cost"]);
-                double Price = Convert.ToDouble(clsUtility.sqlDT.Rows[0]["Price"]);
-                double UnitVatAmount;
-                if (VAT_Applicable == "Y")
+                var itemInformation = StockService.GetItemByItemId(itemId);
+                if(itemInformation != null && itemInformation.Id != 0)
                 {
-                    UnitVatAmount = Price * VAT / 100;
-                }
-                else { UnitVatAmount = 0; }
-
-                //Check Warehouse 
-                clsUtility.ExecuteSQLQuery(" SELECT * FROM  Stock  WHERE ITEM_ID ='" + ITEM_ID + "' AND WarehouseID='" + WarehouseID + "' AND  (Quantity >= '" + QTY + "') ");
-                if (clsUtility.sqlDT.Rows.Count > 0)
-                {
-                    ExpiryDate = clsUtility.sqlDT.Rows[0]["ExpiryDate"].ToString();
-                    clsUtility.ExecuteSQLQuery(" SELECT * FROM Sales  WHERE ITEM_ID = '" + ITEM_ID + "' AND SALES_ID = '" + txtInvoiceNo.Text + "' ");
-                    if (clsUtility.sqlDT.Rows.Count > 0)
+                    if(itemInformation.GroupId != 0 && itemInformation.SecondaryGroupId != 0 && itemInformation.ThirdGroupId != 0)
                     {
-                        clsUtility.ExecuteSQLQuery(" UPDATE  Sales SET QTY = QTY + '" + QTY + "' ,TotalPrice= TotalPrice +'" + QTY * Price + "' ,TotalCost= TotalCost +'" + QTY * Cost + "', TotalVat= TotalVat + '" + QTY * UnitVatAmount + "' " +
-                                                   " WHERE ITEM_ID = '" + ITEM_ID + "' AND SALES_ID = '" + txtInvoiceNo.Text + "' ");
+                        int groupId = itemInformation.GroupId;
+                        int secondaryGroupId = itemInformation.SecondaryGroupId;
+                        int thirdGroupId = itemInformation.ThirdGroupId;
 
+                        Stock stockItem = StockService.GetStockById(groupId,secondaryGroupId,thirdGroupId);
+
+                        if(stockItem != null && stockItem.Id != 0)
+                        {
+                            string WarehouseID, ExpiryDate, VAT_Applicable;
+                            WarehouseID = stockItem.WharehousId.ToString();
+                            VAT_Applicable = stockItem.VatApplicable;
+                            double Cost = stockItem.Cost;
+                            double Price = stockItem.Price;
+                            double UnitVatAmount;
+                            if (VAT_Applicable == "Y")
+                            {
+                                UnitVatAmount = Price * VAT / 100;
+                            }
+                            else { UnitVatAmount = 0; }
+                            ExpiryDate = stockItem.ExpiryDate;
+
+                            if(stockItem.Quantity >= QTY)
+                            {
+                                var salesId = -1;
+                                Int32.TryParse(txtInvoiceNo.Text,out salesId);
+
+                                var sale = StockService.GetSales(itemId, stockItem.Id, salesId);
+                                if(sale != null && sale.Count > 0)
+                                {
+                                    var saleItem = sale[0];
+                                    if(saleItem != null && saleItem.Id != 0)
+                                    {
+                                        bool isStockUpdated = StockService.UpdateSale(QTY, Price, Cost, UnitVatAmount, ITEM_ID, txtInvoiceNo.Text, stockItem.Id);
+
+                                    }
+                                }
+                                else
+                                {
+                                    Sale newSale = new Sale()
+                                    {
+                                        SalesId = Int32.Parse(txtInvoiceNo.Text),
+                                        SalesDate = dtpSalesDate.Value.Date,
+                                        ItemId = Int32.Parse(ITEM_ID),
+                                        Quantity = QTY,
+                                        Price = (float)Price,
+                                        TotalPrice = (float)(QTY * Price),
+                                        Cost = (float)Cost,
+                                        TotalCost = (float)(QTY * Cost),
+                                        Vat = (float)UnitVatAmount,
+                                        TotalVat = (float)(QTY * UnitVatAmount),
+                                        ExprDate = ExpiryDate,
+                                        Terminal = "POS",
+                                        StockId = stockItem.Id
+
+                                    };
+                                    StockService.AddSale(newSale);
+                                }
+                                StockService.UpdateStock(stockItem.GroupId, stockItem.SecondaryGroupId, stockItem.ThirdGroupId, Int32.Parse(WarehouseID), QTY);
+                            }
+                        }
                     }
-                    else
-                    {
-                        clsUtility.ExecuteSQLQuery(" INSERT INTO Sales(SALES_ID,Sales_Date,ITEM_ID,QTY,Price,TotalPrice,Cost,TotalCost,Vat,TotalVat,ExprDate, Terminal) VALUES " +
-                                                   " ( '" + txtInvoiceNo.Text + "' ,'" + dtpSalesDate.Value.Date.ToString("yyyy-MM-dd") + "' , '" + ITEM_ID + "', '" + QTY + "', '" + Price + "','" + QTY * Price + "','" + Cost + "','" + QTY * Cost + "','" + UnitVatAmount + "','" + QTY * UnitVatAmount + "', '" + ExpiryDate + "', 'POS') ");
-                    }
-                    clsUtility.ExecuteSQLQuery(" UPDATE   Stock SET Quantity = Quantity - '" + QTY + "' WHERE ITEM_ID ='" + ITEM_ID + "' AND WarehouseID='" + WarehouseID + "'  ");
+
                 }
-                else {  }
-                //End Warehouse
             }
+
         }
 
         private void CustomerDisplay() {
@@ -422,13 +462,12 @@ namespace Orion
                     else
                     {
                         errorProvider.Clear();
-                        double ITEM_ID;
-                        clsUtility.ExecuteSQLQuery("SELECT * FROM ItemInformation WHERE  (Barcode LIKE '%" + txtBarcode.Text + "%')   ");
-                        if (clsUtility.sqlDT.Rows.Count > 0)
+                        var barcode = txtBarcode.Text;
+                        var item = StockService.GetItemByBarcode(barcode);
+                        if(item != null && item.Id != 0)
                         {
                             errorProvider.Clear();
-                            ITEM_ID = Convert.ToDouble(clsUtility.sqlDT.Rows[0]["ITEM_ID"]);
-                            InsertSalesItem(ITEM_ID.ToString(), 1);
+                            InsertSalesItem(item.Id.ToString(), 1);
                             LoadSalesItem();
                             txtBarcode.Text = "";
                             txtBarcode.Focus();
@@ -479,7 +518,7 @@ namespace Orion
                 if (msg == DialogResult.Yes)
                 {
                     btnSave.PerformClick();
-                    btnReceipt.PerformClick();
+                    //btnReceipt.PerformClick();
                     CreateNewInvoice();
                     LoadSalesItem();
                     txtBarcode.Focus();

@@ -18,6 +18,7 @@ namespace Orion
     {
         string fileExtension = ".jpg";
         string ITEM_ID, WarehouseID;
+        string tempItemName = "TEMPITEMNAME";
         public frmItemInformation(String VAR_ITEM_ID, String VAR_WarehouseID)
         {
             InitializeComponent();
@@ -42,9 +43,6 @@ namespace Orion
 
                         XmlNode l1029 = languageNode["l1029"];
                         lbl1029.Text = l1029.InnerText;
-
-                        XmlNode l1030 = languageNode["l1030"];
-                        lbl1030.Text = l1030.InnerText;
 
                         XmlNode l1031 = languageNode["l1031"];
                         lbl1031.Text = l1031.InnerText;
@@ -84,9 +82,6 @@ namespace Orion
 
                         XmlNode l1043 = languageNode["l1043"];
                         lbl1043.Text = l1043.InnerText;
-
-                        XmlNode l1044 = languageNode["l1044"];
-                        lbl1044.Text = l1044.InnerText;
 
                         XmlNode l1045 = languageNode["l1045"];
                         chkExp.Text = l1045.InnerText;
@@ -129,7 +124,14 @@ namespace Orion
                 clsUtility.ExecuteSQLQuery("SELECT *  FROM  ItemInformation  WHERE ITEM_ID ='" + ITEM_ID + "'  ");
                 if (clsUtility.sqlDT.Rows.Count > 0)
                 {
-                    txtItemName.Text = clsUtility.sqlDT.Rows[0]["ItemName"].ToString();
+                    try
+                    {
+                        pictureBox1.ImageLocation = Application.StartupPath + @"\Upload\ItemImage\" + clsUtility.sqlDT.Rows[0]["PhotoFileName"].ToString();
+                        pictureBox1.InitialImage.Dispose();
+                        fileExtension = Path.GetExtension(clsUtility.sqlDT.Rows[0]["PhotoFileName"].ToString());
+                    }
+                    catch (Exception) { pictureBox1.Image = Orion.Properties.Resources.No_image_found; }
+
                     txtUnit.Text = clsUtility.sqlDT.Rows[0]["UnitOfMeasure"].ToString();
                     txtBatch.Text = clsUtility.sqlDT.Rows[0]["Batch"].ToString();
                     cmbGroup.SelectedValue = clsUtility.sqlDT.Rows[0]["GROUP_ID"].ToString();
@@ -142,13 +144,6 @@ namespace Orion
                     if (clsUtility.sqlDT.Rows[0]["VAT_Applicable"].ToString() == "Y") { cbVATapplicable.Checked = true; }
                     else { cbVATapplicable.Checked = false; }
 
-                    try
-                    {
-                        pictureBox1.ImageLocation = Application.StartupPath + @"\Upload\ItemImage\" + clsUtility.sqlDT.Rows[0]["PhotoFileName"].ToString();
-                        pictureBox1.InitialImage.Dispose();
-                        fileExtension = Path.GetExtension(clsUtility.sqlDT.Rows[0]["PhotoFileName"].ToString());
-                    }
-                    catch (Exception) { pictureBox1.Image = Orion.Properties.Resources.No_image_found; }
                 }
 
                 clsUtility.ExecuteSQLQuery("SELECT *  FROM  Stock  WHERE ITEM_ID ='" + ITEM_ID + "' AND WarehouseID ='" + WarehouseID + "'  ");
@@ -156,7 +151,6 @@ namespace Orion
                 {
                     cmbWarehouse.SelectedValue = clsUtility.sqlDT.Rows[0]["WarehouseID"].ToString();
                     cmbShelf.SelectedValue = clsUtility.sqlDT.Rows[0]["SHELF_ID"].ToString();
-                    txtOpeningStock.Text = clsUtility.sqlDT.Rows[0]["Quantity"].ToString();
                     try { dtpExpDate.Text = clsUtility.sqlDT.Rows[0]["ExpiryDate"].ToString(); }
                     catch (Exception) { }
 
@@ -271,9 +265,8 @@ namespace Orion
             if (clsUtility.sqlDT.Rows.Count > 0)
             {
                 ///////////////////////////////////////////
-                if (string.IsNullOrWhiteSpace(this.txtItemName.Text) | string.IsNullOrWhiteSpace(this.txtUnit.Text) | cmbGroup.SelectedValue == null | cmbSecondaryGroup.SelectedValue == null | cmbGroupThird.SelectedValue == null | cmbGroup.SelectedIndex == -1 | cmbDefaultWarehouse.SelectedValue == null | cmbDefaultWarehouse.SelectedIndex == -1)
+                if (string.IsNullOrWhiteSpace(this.txtUnit.Text) | cmbGroup.SelectedValue == null | cmbSecondaryGroup.SelectedValue == null | cmbGroupThird.SelectedValue == null | cmbGroup.SelectedIndex == -1 | cmbDefaultWarehouse.SelectedValue == null | cmbDefaultWarehouse.SelectedIndex == -1)
                 {
-                    errorProvider.SetError(txtItemName, "Required");
                     errorProvider.SetError(txtUnit, "Required");
                     errorProvider.SetError(cmbGroup, "Required");
                     errorProvider.SetError(cmbSecondaryGroup, "Required");
@@ -299,11 +292,12 @@ namespace Orion
                             ///////////////////////////
 
                             clsUtility.ExecuteSQLQuery(" INSERT INTO ItemInformation(ItemName,UnitOfMeasure,Batch,GROUP_ID,SECONDARY_GROUP_ID,THIRD_GROUP_ID,Barcode,Cost,Price,ReorderPoint,VAT_Applicable, WarehouseID) VALUES " +
-                                                           "  ('" + txtItemName.Text + "','" + txtUnit.Text + "','" + txtBatch.Text + "','" + cmbGroup.SelectedValue.ToString() + "','" + cmbSecondaryGroup.SelectedValue.ToString() + "','" + cmbGroupThird.SelectedValue.ToString() + "','" + clsUtility.GenarateAutoBarcode(barcode) + "','" + clsUtility.num_repl(txtPurchaseCost.Text) + "','" + clsUtility.num_repl(txtSalesPrice.Text) + "','" + clsUtility.num_repl(txtReorderPoint.Text) + "','" + VATapplicable + "','" + cmbDefaultWarehouse.SelectedValue.ToString() + "') ");
+                                                           "  ('" + tempItemName + "','" + txtUnit.Text + "','" + txtBatch.Text + "','" + cmbGroup.SelectedValue.ToString() + "','" + cmbSecondaryGroup.SelectedValue.ToString() + "','" + cmbGroupThird.SelectedValue.ToString() + "','" + clsUtility.GenarateAutoBarcode(barcode) + "','" + clsUtility.num_repl(txtPurchaseCost.Text) + "','" + clsUtility.num_repl(txtSalesPrice.Text) + "','" + clsUtility.num_repl(txtReorderPoint.Text) + "','" + VATapplicable + "','" + cmbDefaultWarehouse.SelectedValue.ToString() + "') ");
                             clsUtility.ExecuteSQLQuery("SELECT  ITEM_ID,GROUP_ID,SECONDARY_GROUP_ID,THIRD_GROUP_ID   FROM   ItemInformation  ORDER BY ITEM_ID DESC");
                             GROUP_ID = clsUtility.sqlDT.Rows[0]["GROUP_ID"].ToString();
                             SECONDARY_GROUP_ID = clsUtility.sqlDT.Rows[0]["SECONDARY_GROUP_ID"].ToString();
                             THIRD_GROUP_ID = clsUtility.sqlDT.Rows[0]["THIRD_GROUP_ID"].ToString();
+                            ITEM_ID = clsUtility.sqlDT.Rows[0]["ITEM_ID"].ToString();
 
                             clsUtility.ExecuteSQLQuery(@"SELECT  STOCK_ID,Quantity  
                                                          FROM Stock 
@@ -377,7 +371,7 @@ namespace Orion
                                 ///////////////////////////
 
                                 clsUtility.ExecuteSQLQuery(" INSERT INTO ItemInformation(ItemName,UnitOfMeasure,Batch,GROUP_ID,SECONDARY_GROUP_ID,THIRD_GROUP_ID,Barcode,Cost,Price,ReorderPoint,VAT_Applicable, WarehouseID) VALUES " +
-                                                               "  ('" + txtItemName.Text + "','" + txtUnit.Text + "','" + txtBatch.Text + "','" + cmbGroup.SelectedValue.ToString() + "','" + cmbSecondaryGroup.SelectedValue.ToString() + "','" + cmbGroupThird.SelectedValue.ToString() + "','" + txtBarcode.Text + "','" + clsUtility.num_repl(txtPurchaseCost.Text) + "','" + clsUtility.num_repl(txtSalesPrice.Text) + "','" + clsUtility.num_repl(txtReorderPoint.Text) + "','" + VATapplicable + "','" + cmbDefaultWarehouse.SelectedValue.ToString() + "') ");
+                                                               "  ('" + tempItemName + "','" + txtUnit.Text + "','" + txtBatch.Text + "','" + cmbGroup.SelectedValue.ToString() + "','" + cmbSecondaryGroup.SelectedValue.ToString() + "','" + cmbGroupThird.SelectedValue.ToString() + "','" + txtBarcode.Text + "','" + clsUtility.num_repl(txtPurchaseCost.Text) + "','" + clsUtility.num_repl(txtSalesPrice.Text) + "','" + clsUtility.num_repl(txtReorderPoint.Text) + "','" + VATapplicable + "','" + cmbDefaultWarehouse.SelectedValue.ToString() + "') ");
                                 clsUtility.ExecuteSQLQuery("SELECT  ITEM_ID,GROUP_ID,SECONDARY_GROUP_ID,THIRD_GROUP_ID   FROM   ItemInformation  ORDER BY ITEM_ID DESC");
                                 GROUP_ID = clsUtility.sqlDT.Rows[0]["GROUP_ID"].ToString();
                                 SECONDARY_GROUP_ID = clsUtility.sqlDT.Rows[0]["SECONDARY_GROUP_ID"].ToString();
@@ -460,7 +454,6 @@ namespace Orion
             btnDelete.Enabled = false;
             fileExtension = ".png";
             pictureBox1.Image = Orion.Properties.Resources.No_image_found;
-            txtOpeningStock.Text = "";
             chkExp.Checked = false ;
             dtpExpDate.Value = DateTime.Today;
             cbVATapplicable.Checked = false;
@@ -471,7 +464,6 @@ namespace Orion
             txtBarcode.Text = "";
             txtBatch.Text = "";
             txtUnit.Text = "";
-            txtItemName.Text = "";
         }
 
         private void btnShelf_Click(object sender, EventArgs e)
@@ -561,7 +553,7 @@ namespace Orion
                 if (thirdGroupId != -1)
                 {
                     var ItemName = cmbGroup.Text + " - " + cmbSecondaryGroup.Text + " - " + cmbGroupThird.Text;
-                    txtItemName.Text = ItemName;
+                    tempItemName = ItemName;
                 }
             }
 
@@ -630,9 +622,8 @@ namespace Orion
             if (clsUtility.sqlDT.Rows.Count > 0)
             {
                 ///////////////////////////////////////////
-                if (string.IsNullOrWhiteSpace(this.txtItemID.Text) | string.IsNullOrWhiteSpace(this.txtItemName.Text) | string.IsNullOrWhiteSpace(this.txtUnit.Text) | cmbGroup.SelectedValue == null | cmbGroup.SelectedIndex == -1 | cmbDefaultWarehouse.SelectedValue == null | cmbDefaultWarehouse.SelectedIndex == -1)
+                if (string.IsNullOrWhiteSpace(this.txtItemID.Text)  | string.IsNullOrWhiteSpace(this.txtUnit.Text) | cmbGroup.SelectedValue == null | cmbGroup.SelectedIndex == -1 | cmbDefaultWarehouse.SelectedValue == null | cmbDefaultWarehouse.SelectedIndex == -1)
                 {
-                    errorProvider.SetError(txtItemName, "Required");
                     errorProvider.SetError(txtUnit, "Required");
                     errorProvider.SetError(cmbGroup, "Required");
                     errorProvider.SetError(cmbDefaultWarehouse, "Required");
@@ -647,10 +638,11 @@ namespace Orion
                     if (cbVATapplicable.Checked) { VATapplicable = "Y"; } else { VATapplicable = "N"; }
                     try
                     {
-                        clsUtility.ExecuteSQLQuery(" UPDATE  ItemInformation SET  ItemName='" + txtItemName.Text + "',UnitOfMeasure='" + txtUnit.Text + "',Batch='" + txtBatch.Text + "',GROUP_ID='" + cmbGroup.SelectedValue.ToString() + "',Barcode='" + txtBarcode.Text + "',Cost='" + clsUtility.num_repl(txtPurchaseCost.Text) + "',Price='" + clsUtility.num_repl(txtSalesPrice.Text) + "',ReorderPoint='" + clsUtility.num_repl(txtReorderPoint.Text) + "',VAT_Applicable='" + VATapplicable + "', WarehouseID = '" + cmbDefaultWarehouse.SelectedValue.ToString() + "' " +
+                        clsUtility.ExecuteSQLQuery(" UPDATE  ItemInformation SET  ItemName='" + tempItemName + "',UnitOfMeasure='" + txtUnit.Text + "',Batch='" + txtBatch.Text + "',GROUP_ID='" + cmbGroup.SelectedValue.ToString() + "',Barcode='" + txtBarcode.Text + "',Cost='" + clsUtility.num_repl(txtPurchaseCost.Text) + "',Price='" + clsUtility.num_repl(txtSalesPrice.Text) + "',ReorderPoint='" + clsUtility.num_repl(txtReorderPoint.Text) + "',VAT_Applicable='" + VATapplicable + "', WarehouseID = '" + cmbDefaultWarehouse.SelectedValue.ToString() + "' " +
                                    " WHERE ITEM_ID ='" + ITEM_ID + "'  ");
 
-                        clsUtility.ExecuteSQLQuery("UPDATE  Stock  SET  Quantity='" + clsUtility.num_repl(txtOpeningStock.Text) + "',  ExpiryDate='" + ExpiryDate.ToString() + "', WarehouseID='" + cmbWarehouse.SelectedValue.ToString() + "',  SHELF_ID='" + clsUtility.fltr_combo(cmbShelf).ToString() + "', Expiry='" + Expiry.ToString() + "'  WHERE  ITEM_ID ='" + ITEM_ID + "'  AND  WarehouseID='" + WarehouseID + "'  ");
+                        //comment for temp
+                        //clsUtility.ExecuteSQLQuery("UPDATE  Stock  SET  Quantity='" + clsUtility.num_repl(txtOpeningStock.Text) + "',  ExpiryDate='" + ExpiryDate.ToString() + "', WarehouseID='" + cmbWarehouse.SelectedValue.ToString() + "',  SHELF_ID='" + clsUtility.fltr_combo(cmbShelf).ToString() + "', Expiry='" + Expiry.ToString() + "'  WHERE  ITEM_ID ='" + ITEM_ID + "'  AND  WarehouseID='" + WarehouseID + "'  ");
 
                         UploadImage(txtItemID.Text);
                         btnReset.PerformClick();

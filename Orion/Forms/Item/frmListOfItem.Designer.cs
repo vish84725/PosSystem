@@ -55,13 +55,13 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -112,13 +112,13 @@
             this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
+            this.Column6,
             this.Column2,
             this.Column3,
             this.Column4,
             this.Column5,
             this.Column12,
             this.Column13,
-            this.Column6,
             this.Column7,
             this.Column8,
             this.Column9,
@@ -371,6 +371,13 @@
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
             // 
+            // Column6
+            // 
+            this.Column6.DataPropertyName = "Barcode";
+            this.Column6.HeaderText = "Barcode";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            // 
             // Column2
             // 
             this.Column2.DataPropertyName = "ItemName";
@@ -412,13 +419,6 @@
             this.Column13.HeaderText = "Paint Type";
             this.Column13.Name = "Column13";
             this.Column13.ReadOnly = true;
-            // 
-            // Column6
-            // 
-            this.Column6.DataPropertyName = "Barcode";
-            this.Column6.HeaderText = "Barcode";
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
             // 
             // Column7
             // 
@@ -511,13 +511,13 @@
         private System.Windows.Forms.Button btnExportData;
         private System.Windows.Forms.ErrorProvider errorProvider;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column13;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
